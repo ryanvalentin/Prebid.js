@@ -196,7 +196,7 @@ const OpenxAdapter = function OpenxAdapter() {
   function callBids(params) {
     let isIfr,
       bids = params.bids || [],
-      currentURL = window.location.href && encodeURIComponent(window.location.href);
+      currentURL = bids[0].params.currentURL || window.location.href;
     try {
       isIfr = window.self !== window.top;
     }
@@ -210,6 +210,8 @@ const OpenxAdapter = function OpenxAdapter() {
     let delDomain = bids[0].params.delDomain;
 
     startTime = new Date(params.start);
+
+    currentURL = currentURL && encodeURIComponent(currentURL);
 
     buildRequest(bids, {
       ju: currentURL,

@@ -266,4 +266,31 @@ describe('openx adapter tests', function () {
     spyLoadScript.restore();
   });
 
+  it('should use currentURL when defined in params', function () {
+    let spyLoadScript = sinon.spy(adloader, 'loadScript');
+    let params = {
+      bids: [
+        {
+          sizes: [[300, 250], [300, 600]],
+          params: {
+            delDomain: 'testdelDomain',
+            unit: 1234,
+            currentURL: 'http://example.com/custom_url/'
+          }
+        }
+      ]
+    };
+    adapter().callBids(params);
+
+    sinon.assert.calledOnce(spyLoadScript);
+
+    let bidUrl = spyLoadScript.getCall(0).args[0];
+    expect(bidUrl).to.include('testdelDomain');
+    expect(bidUrl).to.include('1234');
+    expect(bidUrl).to.include('300x250,300x600');
+    expect(bidUrl).to.include('ju=http%3A%2F%2Fexample.com%2Fcustom_url%2F');
+    expect(bidUrl).to.include('jr=http%3A%2F%2Fexample.com%2Fcustom_url%2F');
+    spyLoadScript.restore();
+  });
+
 });
