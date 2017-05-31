@@ -6,7 +6,7 @@ const constants = require('../constants.json');
 
 const AolAdapter = function AolAdapter() {
   let showCpmAdjustmentWarning = true;
-  const pubapiTemplate = template`${'protocol'}://${'host'}/pubapi/3.0/${'network'}/${'placement'}/${'pageid'}/${'sizeid'}/ADTECH;v=2;cmd=bid;cors=yes;alias=${'alias'}${'bidfloor'};misc=${'misc'}`;
+  const pubapiTemplate = template`${'protocol'}://${'host'}/pubapi/3.0/${'network'}/${'placement'}/${'pageid'}/${'sizeid'}/ADTECH;v=2;cmd=bid;cors=yes;${'kvrefd'}alias=${'alias'}${'bidfloor'};misc=${'misc'}`;
   const nexageBaseApiTemplate = template`${'protocol'}://${'host'}/bidRequest?`;
   const nexageGetApiTemplate = template`dcn=${'dcn'}&pos=${'pos'}&cmd=bid${'ext'}`;
   const BIDDER_CODE = 'aol';
@@ -118,6 +118,7 @@ const AolAdapter = function AolAdapter() {
   function _buildMarketplaceUrl(bid) {
     const params = bid.params;
     const serverParam = params.server;
+    const domain = params.referrerDomain;
     let regionParam = params.region || 'us';
     let server;
 
@@ -142,6 +143,7 @@ const AolAdapter = function AolAdapter() {
       placement: parseInt(params.placement),
       pageid: params.pageId || 0,
       sizeid: params.sizeId || 0,
+      kvrefd: domain ? ('kvrefd=' + domain + ';') : '',
       alias: params.alias || utils.getUniqueIdentifierStr(),
       bidfloor: (typeof params.bidFloor !== 'undefined')
         ? `;bidfloor=${params.bidFloor.toString()}` : '',
