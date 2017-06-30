@@ -1,6 +1,6 @@
 [
-    "aol",
-    "appnexus",
-    "openx",
-    "rubicon"
+    "aolBidAdapter",
+    "appnexusBidAdapter",
+    "openxBidAdapter",
+    "rubiconBidAdapter"
 ]
