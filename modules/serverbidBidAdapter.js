@@ -78,17 +78,16 @@ const ServerBidAdapter = function ServerBidAdapter() {
   }
 
   function _callBids(params) {
+    const bids = params.bids || [];
     const data = {
       placements: [],
       time: Date.now(),
       user: {},
-      url: utils.getTopWindowUrl(),
-      referrer: document.referrer,
+      url: bids[0].params.url || utils.getTopWindowUrl(),
+      referrer: bids[0].params.referrer || document.referrer,
       enableBotFiltering: true,
       includePricingData: true
     };
-
-    const bids = params.bids || [];
 
     for (let i = 0; i < bids.length; i++) {
       const bid = bids[i];
