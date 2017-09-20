@@ -21,6 +21,11 @@ function isSecure() {
 const FASTLANE_ENDPOINT = '//fastlane.rubiconproject.com/a/api/fastlane.json';
 const VIDEO_ENDPOINT = '//fastlane-adv.rubiconproject.com/v1/auction/video';
 
+// Vantage header information for ad reporting
+const VANTAGE_HEADER_KEY = 'X-Rubicon-Source';
+const VANTAGE_XSOURCE = 'Vantage/2 for Chrome';
+const VANTAGE_RESPONSE_KEY = 'X-Rubicon-Vantage';
+
 const TIMEOUT_BUFFER = 500;
 
 var sizeMap = {
@@ -98,7 +103,8 @@ function RubiconAdapter() {
             },
             undefined,
             {
-              withCredentials: true
+              withCredentials: true,
+              [VANTAGE_HEADER_KEY]: VANTAGE_XSOURCE,
             }
           );
         }
@@ -107,10 +113,13 @@ function RubiconAdapter() {
         addErrorBid();
       }
 
-      function bidCallback(responseText) {
+      function bidCallback(responseText, request) {
         try {
           utils.logMessage('XHR callback function called for ad ID: ' + bid.bidId);
           handleRpCB(responseText, bid);
+
+          // Stores this header so the Disqus code can access it for ad reporting.
+          window.RUBICON_VANTAGE_HEADER = request.getResponseHeader(VANTAGE_RESPONSE_KEY);
         } catch (err) {
           if (typeof err === 'string') {
             utils.logWarn(`${err} when processing rubicon response for placement code ${bid.placementCode}`);
