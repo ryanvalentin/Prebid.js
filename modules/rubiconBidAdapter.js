@@ -116,10 +116,8 @@ function RubiconAdapter() {
       function bidCallback(responseText, request) {
         try {
           utils.logMessage('XHR callback function called for ad ID: ' + bid.bidId);
+          bid.vantageHeader = request.getResponseHeader(VANTAGE_RESPONSE_KEY);
           handleRpCB(responseText, bid);
-
-          // Stores this header so the Disqus code can access it for ad reporting.
-          window.RUBICON_VANTAGE_HEADER = request.getResponseHeader(VANTAGE_RESPONSE_KEY);
         } catch (err) {
           if (typeof err === 'string') {
             utils.logWarn(`${err} when processing rubicon response for placement code ${bid.placementCode}`);
