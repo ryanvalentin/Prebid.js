@@ -1,6 +1,7 @@
 [
     "aolBidAdapter",
     "appnexusBidAdapter",
+    "criteoBidAdapter",
     "openxBidAdapter",
     "rubiconBidAdapter",
     "serverbidBidAdapter"
