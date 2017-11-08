@@ -100,6 +100,7 @@ ServerBidAdapter = function ServerBidAdapter() {
   }
 
   function _callBids(config, params) {
+    const bids = params.bids || [];
     const data = Object.assign({
       placements: [],
       time: Date.now(),
@@ -109,8 +110,6 @@ ServerBidAdapter = function ServerBidAdapter() {
       enableBotFiltering: true,
       includePricingData: true
     }, config.request);
-
-    const bids = params.bids || [];
 
     for (let i = 0; i < bids.length; i++) {
       const bid = bids[i];
